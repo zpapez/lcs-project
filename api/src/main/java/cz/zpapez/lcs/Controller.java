@@ -13,7 +13,7 @@ public class Controller {
 
     private final MyService service;
 
-    @GetMapping("/resource")
+    @GetMapping("/diff")
     public String getResource() {
 
         service.fetchData();
