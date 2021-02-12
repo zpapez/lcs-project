@@ -5,7 +5,6 @@ plugins {
 }
 
 group = 'cz.zpapez'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 repositories {
@@ -19,8 +18,8 @@ ext {
 }
 
 dependencies {
-    //compileOnly 'org.projectlombok:lombok'
-    //annotationProcessor 'org.projectlombok:lombok'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
