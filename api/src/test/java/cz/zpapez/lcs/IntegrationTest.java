@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,6 @@ import com.github.tomakehurst.wiremock.http.RequestListener;
 import com.github.tomakehurst.wiremock.http.Response;
 import com.google.common.io.Resources;
 
-import cz.zpapez.lcs.Controller;
 import cz.zpapez.lcs.IntegrationTest.AppIntegrationTestPropertyInitializer;
 import cz.zpapez.lcs.testutil.WireMockExtension;
 import cz.zpapez.lcs.testutil.WireMockInstance;
@@ -50,6 +50,7 @@ import cz.zpapez.lcs.testutil.WireMockInstance;
                 "slack.app.oauth.accessToken=testFakeToken"
         })
 @ContextConfiguration(initializers = AppIntegrationTestPropertyInitializer.class)
+@Disabled
 public class IntegrationTest {
 
     public static WireMockServer zephyrWiremockServer;

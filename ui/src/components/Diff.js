@@ -6,6 +6,10 @@ class Diff extends Component {
   constructor(props) {
     super(props);
 
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.fileInput1 = React.createRef();
+    this.fileInput2 = React.createRef();
+
     this.state = {
       hits: null,
       error: null,
@@ -26,6 +30,32 @@ class Diff extends Component {
     .catch(error => this.setState({ error, isLoaded: true }));
   }
 
+  handleSubmit(event) {
+    event.preventDefault();
+    this.setState({ isLoaded: false });
+    this.uploadFile(this.fileInput1.current.files[0], this.fileInput2.current.files[0]);
+  }
+
+  uploadFile(file1, file2) {
+    var formData = new FormData();
+
+    formData.append(`file1`, file1);
+    formData.append(`file2`, file2);
+
+    fetch('/api/v1/upload', {
+      // content-type header should not be specified!
+      method: 'POST',
+      body: formData,
+    })
+      .then(response => response.text())
+      .then(data => {
+        console.log(data);
+        this.setState({ hits: data, isLoaded: true });
+      })
+      .catch(error => this.setState({ error, isLoaded: true })
+    );
+  }
+
   render() {
     const { isLoaded, error, hits } = this.state;
 
@@ -43,6 +73,20 @@ class Diff extends Component {
           <p>
             {hits}
           </p>
+
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              File 1:
+              <input type="file" ref={this.fileInput1} />
+            </label>
+            <br />
+            <label>
+              File 2:
+              <input type="file" ref={this.fileInput2} />
+            </label>
+            <br />
+            <button type="submit">Diff</button>
+          </form>
         </div>
       );
     }
