@@ -47,7 +47,13 @@ class Diff extends Component {
       method: 'POST',
       body: formData,
     })
-      .then(response => response.text())
+      .then(response => {
+        if (response.ok) {
+          return response.text();
+        } else {
+          throw new Error(response.status + ' - Something went wrong ...');
+        }
+      })
       .then(data => {
         console.log(data);
         this.setState({ hits: data, isLoaded: true });
@@ -69,10 +75,7 @@ class Diff extends Component {
     } else {
       return (
         <div>
-          <h2>Data:</h2>
-          <p>
-            {hits}
-          </p>
+          <h2>Diff</h2>
 
           <form onSubmit={this.handleSubmit}>
             <label>
@@ -87,6 +90,10 @@ class Diff extends Component {
             <br />
             <button type="submit">Diff</button>
           </form>
+
+          <h3>Result:</h3>
+          <div dangerouslySetInnerHTML={{__html: hits}} />
+
         </div>
       );
     }
