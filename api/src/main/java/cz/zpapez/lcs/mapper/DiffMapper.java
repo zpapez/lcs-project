@@ -1,4 +1,4 @@
-package cz.zpapez.lcs;
+package cz.zpapez.lcs.mapper;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -9,10 +9,10 @@ import cz.zpapez.lcs.dto.DiffResponseDto;
 import cz.zpapez.lcs.model.DiffModel;
 
 @Component
-public class DiffDecorator {
+public class DiffMapper {
 
-    public List<DiffResponseDto> mapToResponseDtoList(List<DiffModel> result) {
-        return result.stream()
+    public List<DiffResponseDto> mapToResponseDtoList(List<DiffModel> modelList) {
+        return modelList.stream()
                 .map(model -> {
                     DiffResponseDto dto;
                     switch (model.getType()) {

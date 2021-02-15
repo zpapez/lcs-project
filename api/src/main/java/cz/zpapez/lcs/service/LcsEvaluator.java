@@ -1,4 +1,4 @@
-package cz.zpapez.lcs;
+package cz.zpapez.lcs.service;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,8 +25,6 @@ public class LcsEvaluator {
         DiffType lastType = null;
         DiffModel diffModel = null;
 
-        // read the substring out from the matrix
-//        StringBuffer sb = new StringBuffer();
         int x = a.length(), y = b.length();
         while (x > 0 && y > 0) {
             if (lengths[x][y] == lengths[x-1][y]) {
@@ -37,9 +35,6 @@ public class LcsEvaluator {
                     diffModel = new DiffModel(DiffType.REMOVED);
                 }
                 diffModel.getStringBuilder().append(a.charAt(x-1));
-
-//                sb.append(a.charAt(x-1));
-//                sb.append("-");
                 x--;
             } else if (lengths[x][y] == lengths[x][y-1]) {
 
@@ -49,9 +44,6 @@ public class LcsEvaluator {
                     diffModel = new DiffModel(DiffType.ADDED);
                 }
                 diffModel.getStringBuilder().append(b.charAt(y-1));
-
-//                sb.append(b.charAt(y-1));
-//                sb.append("+");
                 y--;
             } else {
                 assert a.charAt(x-1) == b.charAt(y-1);
@@ -62,8 +54,6 @@ public class LcsEvaluator {
                     diffModel = new DiffModel(DiffType.MATCHED);
                 }
                 diffModel.getStringBuilder().append(a.charAt(x-1));
-
-//                sb.append(a.charAt(x-1));
                 x--;
                 y--;
             }
@@ -72,7 +62,6 @@ public class LcsEvaluator {
         saveDiffModel(listDiffs, diffModel);
         appendRemaining(listDiffs, a, b, x, y);
 
-//        return sb.reverse().toString();
         Collections.reverse(listDiffs);
         return listDiffs;
     }
@@ -91,19 +80,15 @@ public class LcsEvaluator {
             DiffModel diffModel = new DiffModel(DiffType.REMOVED);
             while (x > 0) {
                 diffModel.getStringBuilder().append(a.charAt(x-1));
-//                sb.append(a.charAt(x-1));
-//                sb.append("-");
                 x--;
             }
             saveDiffModel(listDiffs, diffModel);
         }
 
-        if (x > 0) {
+        if (y > 0) {
             DiffModel diffModel = new DiffModel(DiffType.ADDED);
             while (y > 0) {
                 diffModel.getStringBuilder().append(b.charAt(y-1));
-//                sb.append(b.charAt(y-1));
-//                sb.append("+");
                 y--;
 
             }

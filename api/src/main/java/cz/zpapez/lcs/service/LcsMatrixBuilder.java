@@ -1,4 +1,4 @@
-package cz.zpapez.lcs;
+package cz.zpapez.lcs.service;
 
 import org.springframework.stereotype.Component;
 

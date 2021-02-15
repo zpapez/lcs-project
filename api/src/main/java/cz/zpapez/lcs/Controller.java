@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import cz.zpapez.lcs.dto.DiffResponseDto;
+import cz.zpapez.lcs.mapper.DiffMapper;
 import cz.zpapez.lcs.model.DiffModel;
+import cz.zpapez.lcs.service.LcsService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -19,8 +21,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class Controller {
 
-    private final MyService service;
-    private final DiffDecorator mapper;
+    private final LcsService service;
+    private final DiffMapper mapper;
 
     @GetMapping("/diff")
     public List<DiffResponseDto> getResource() {
