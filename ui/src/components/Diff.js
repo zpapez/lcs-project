@@ -13,22 +13,22 @@ class Diff extends Component {
     this.state = {
       hits: null,
       error: null,
-      isLoaded: false
+      isLoaded: true
     };
   }
 
-  componentDidMount() {
-    fetch('/api/v1/diff')
-    .then(response => {
-      if (response.ok) {
-        return response.text();
-      } else {
-        throw new Error(response.status + ' - Something went wrong ...');
-      }
-    })
-    .then(data => this.setState({ hits: data, isLoaded: true }))
-    .catch(error => this.setState({ error, isLoaded: true }));
-  }
+  // componentDidMount() {
+  //   fetch('/api/v1/diff')
+  //   .then(response => {
+  //     if (response.ok) {
+  //       return response.json();
+  //     } else {
+  //       throw new Error(response.status + ' - Something went wrong ...');
+  //     }
+  //   })
+  //   .then(data => this.setState({ hits: data, isLoaded: true }))
+  //   .catch(error => this.setState({ error, isLoaded: true }));
+  // }
 
   handleSubmit(event) {
     event.preventDefault();
@@ -49,13 +49,12 @@ class Diff extends Component {
     })
       .then(response => {
         if (response.ok) {
-          return response.text();
+          return response.json();
         } else {
           throw new Error(response.status + ' - Something went wrong ...');
         }
       })
       .then(data => {
-        console.log(data);
         this.setState({ hits: data, isLoaded: true });
       })
       .catch(error => this.setState({ error, isLoaded: true })
@@ -72,6 +71,26 @@ class Diff extends Component {
     } else if (!isLoaded) {
       // Loading - centralized
       return <LoadingProgress />;
+    } else if (hits == null) {
+      return (
+        <div>
+          <h2>Diff</h2>
+
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              File 1:
+              <input type="file" ref={this.fileInput1} />
+            </label>
+            <br />
+            <label>
+              File 2:
+              <input type="file" ref={this.fileInput2} />
+            </label>
+            <br />
+            <button type="submit">Diff</button>
+          </form>
+        </div>
+      );
     } else {
       return (
         <div>
@@ -92,8 +111,19 @@ class Diff extends Component {
           </form>
 
           <h3>Result:</h3>
-          <div dangerouslySetInnerHTML={{__html: hits}} />
-
+          {hits.map((data, key) => {
+            var color = 'white';
+            if (data.type == '-') {
+              color = 'red';
+            } else if (data.type == '+') {
+              color = 'green';
+            }
+            return (
+              <span style={{color: color}} key={key}>
+                {data.string}
+              </span>
+            );
+          })}
         </div>
       );
     }
