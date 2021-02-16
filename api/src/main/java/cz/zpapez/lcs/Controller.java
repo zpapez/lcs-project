@@ -3,7 +3,6 @@ package cz.zpapez.lcs;
 import java.io.IOException;
 import java.util.List;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,14 +22,6 @@ public class Controller {
 
     private final LcsService service;
     private final DiffMapper mapper;
-
-    @GetMapping("/diff")
-    public List<DiffResponseDto> getResource() {
-
-        service.fetchData();
-
-        return List.of(new DiffResponseDto("removed", "abc </span>  def"));
-    }
 
     @PostMapping("/upload")
     public List<DiffResponseDto> submit(@RequestParam("file1") MultipartFile file1,

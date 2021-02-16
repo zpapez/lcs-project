@@ -9,19 +9,13 @@ import org.springframework.stereotype.Service;
 import cz.zpapez.lcs.io.FileProcessor;
 import cz.zpapez.lcs.model.DiffModel;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class LcsService {
 
     private final FileProcessor fileProcessor;
     private final LcsEvaluator lcsEvaluator;
-
-    public void fetchData() {
-        log.info("service running");
-    }
 
     public List<DiffModel> diff(InputStream inputStream1, InputStream inputStream2) throws IOException {
 
