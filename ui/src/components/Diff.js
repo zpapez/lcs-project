@@ -113,13 +113,16 @@ class Diff extends Component {
           <h3>Result:</h3>
           {hits.map((data, key) => {
             var color = 'white';
+            var textDecoration = 'none';
             if (data.type == '-') {
               color = 'red';
+              textDecoration = 'underline';
             } else if (data.type == '+') {
               color = 'green';
+              textDecoration = 'underline';
             }
             return (
-              <span style={{color: color}} key={key}>
+              <span style={{color: color, textDecoration: textDecoration}} key={key}>
                 {data.string}
               </span>
             );
