@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  ui:
+    image: lcs-ui:0.0.1-local
+    ports:
+      - "80:80"
+    networks:
+      - lcs
+    deploy:
+      replicas: 1
+  api:
+    image: lcs-api:0.0.1-local
+    command: java -jar -Dspring.cloud.inetutils.preferredNetworks[0]=10.10 api.jar
+    ports:
+      - "8080:8080"
+    networks:
+      - lcs
+    deploy:
+      replicas: 1
+
+networks:
+  lcs:
+    driver: overlay
