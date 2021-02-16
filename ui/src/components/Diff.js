@@ -11,28 +11,15 @@ class Diff extends Component {
     this.fileInput2 = React.createRef();
 
     this.state = {
-      hits: null,
+      diffs: null,
       error: null,
       isLoaded: true
     };
   }
 
-  // componentDidMount() {
-  //   fetch('/api/v1/diff')
-  //   .then(response => {
-  //     if (response.ok) {
-  //       return response.json();
-  //     } else {
-  //       throw new Error(response.status + ' - Something went wrong ...');
-  //     }
-  //   })
-  //   .then(data => this.setState({ hits: data, isLoaded: true }))
-  //   .catch(error => this.setState({ error, isLoaded: true }));
-  // }
-
   handleSubmit(event) {
     event.preventDefault();
-    this.setState({ isLoaded: false });
+    this.setState({ isLoaded: false, diffs: null });
     this.uploadFile(this.fileInput1.current.files[0], this.fileInput2.current.files[0]);
   }
 
@@ -43,7 +30,6 @@ class Diff extends Component {
     formData.append(`file2`, file2);
 
     fetch('/api/v1/upload', {
-      // content-type header should not be specified!
       method: 'POST',
       body: formData,
     })
@@ -55,41 +41,18 @@ class Diff extends Component {
         }
       })
       .then(data => {
-        this.setState({ hits: data, isLoaded: true });
+        this.setState({ diffs: data, isLoaded: true });
       })
       .catch(error => this.setState({ error, isLoaded: true })
     );
   }
 
   render() {
-    const { isLoaded, error, hits } = this.state;
+    const { isLoaded, error, diffs } = this.state;
 
     if (error) {
       return (
         <b>{error.message}</b>
-      );
-    } else if (!isLoaded) {
-      // Loading - centralized
-      return <LoadingProgress />;
-    } else if (hits == null) {
-      return (
-        <div>
-          <h2>Diff</h2>
-
-          <form onSubmit={this.handleSubmit}>
-            <label>
-              File 1:
-              <input type="file" ref={this.fileInput1} />
-            </label>
-            <br />
-            <label>
-              File 2:
-              <input type="file" ref={this.fileInput2} />
-            </label>
-            <br />
-            <button type="submit">Diff</button>
-          </form>
-        </div>
       );
     } else {
       return (
@@ -110,8 +73,14 @@ class Diff extends Component {
             <button type="submit">Diff</button>
           </form>
 
-          <h3>Result:</h3>
-          {hits.map((data, key) => {
+          {!isLoaded &&
+            <LoadingProgress />
+          }
+
+          {diffs &&
+            <h3>Result:</h3>
+          }
+          {diffs && diffs.map((data, key) => {
             var color = 'white';
             var textDecoration = 'none';
             if (data.type == '-') {
@@ -127,6 +96,7 @@ class Diff extends Component {
               </span>
             );
           })}
+
         </div>
       );
     }
